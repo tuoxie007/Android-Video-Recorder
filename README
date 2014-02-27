@@ -9,13 +9,14 @@ How To Build
 1. Run ./pull_code.sh to pull ffmpeg, x264 and faac source code to current directory.
 2. Run /path/to/android/ndk/build/tools/make-standalone-toolchain.sh --install-dir=./toolchain
 3. Edit build.sh and change NDK at the top to point to your NDK directory. Or you can set NDK as a env variable.
-4. Run the following commands:
+4. Open faac/frontend/main.c, remove all code in main function.
+5. Run the following commands:
 	./build.sh config faac
 	./build.sh compile faac
 	./build.sh config x264
 	./build.sh compile x264
 	./build.sh config ffmpeg
 	./build.sh compile ffmpeg
-5. You should now have ffmpeg/lib*.a. Copy the ffmpeg/ to your Project/jni/.
+6. You should now have ffmpeg/lib*.a. Copy the ffmpeg/ to your Project/jni/.
 
-6. Look at the Android.mk file as reference of your Android.mk file.
+7. Look at the Android.mk file as reference of your Android.mk file.
