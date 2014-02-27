@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set NDK to the full path to your NDK install
-if [ "NDK" -eq "" ]; then
+if [ "NDK" == "" ]; then
     NDK="/Users/jason/android/android-ndk-r6b"
 fi
 
