@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # Set NDK to the full path to your NDK install
-NDK="/Users/Ayena/Desktop/android-ndk-r6b"
+if [ "NDK" -eq "" ]; then
+    NDK="/Users/jason/android/android-ndk-r6b"
+fi
 
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
-export PATH=$PATH:$NDK:$DIR/toolchain/bin
+export PATH=$NDK:$DIR/toolchain/bin:$PATH
 
 # Got these from watching verbose output of ndk-build
 # -fpic is not here because we enable it in the configure scripts
@@ -13,18 +15,19 @@ export PATH=$PATH:$NDK:$DIR/toolchain/bin
 ANDROID_CFLAGS="-DANDROID -D__ARM_ARCH_7__ -D__ARM_ARCH_7A__ -ffunction-sections -funwind-tables -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -Wa,--noexecstack -Os "
 ANDROID_CXXFLAGS="-DANDROID -D__ARM_ARCH_7__ -D__ARM_ARCH_7A__ -ffunction-sections -funwind-tables -Wno-psabi -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-exceptions -fno-rtti -mthumb -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -Wa,--noexecstack -Os "
 
-PREFIX=arm-linux-androideabi-
+SYSROOT=$DIR/toolchain/sysroot
+PREFIX=$DIR/toolchain/arm-linux-androideabi/bin/
 export AR=${PREFIX}ar
 export AS=${PREFIX}gcc
-export CC=${PREFIX}gcc
-export CXX=${PREFIX}g++
+export CC="${PREFIX}gcc --sysroot=$SYSROOT"
+export CXX="${PREFIX}g++ --sysroot=$SYSROOT"
 export LD=${PREFIX}ld
 export NM=${PREFIX}nm
 export RANLIB=${PREFIX}ranlib
 export STRIP=${PREFIX}strip
 export CFLAGS=${ANDROID_CFLAGS}
 export CXXFLAGS=${ANDROID_CXXFLAGS}
-export CPPFLAGS=${ANDROID_CPPFLAGS}
+export CPPFLAGS=${ANDROID_CXXFLAGS}
 
 usage()
 {
@@ -99,7 +102,6 @@ config_ffmpeg()
 		--disable-debug \
 		--disable-doc \
 		--disable-ffmpeg \
-		--disable-avconv \
 		--disable-ffplay \
 		--disable-ffprobe \
 		--disable-ffserver \

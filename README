@@ -6,9 +6,9 @@ Targeted to armv7-a with vfpv3-d16.
 
 How To Build
 
-1. Make directories faac, x264, and ffmpeg, and place the sources for them into the respective directories.
+1. Run ./pull_code.sh to pull ffmpeg, x264 and faac source code to current directory.
 2. Run /path/to/android/ndk/build/tools/make-standalone-toolchain.sh --install-dir=./toolchain
-3. Edit build.sh and change NDK at the top to point to your NDK directory.
+3. Edit build.sh and change NDK at the top to point to your NDK directory. Or you can set NDK as a env variable.
 4. Run the following commands:
 	./build.sh config faac
 	./build.sh compile faac
@@ -16,14 +16,6 @@ How To Build
 	./build.sh compile x264
 	./build.sh config ffmpeg
 	./build.sh compile ffmpeg
-	./build.sh compile recorder
-5. You should now have a static library libVideoRecorder.a.
+5. You should now have ffmpeg/lib*.a. Copy the ffmpeg/ to your Project/jni/.
 
-How To Use
-
-Link libVideoRecorder.a into your Android JNI as a prebuilt static library.
-Use the interface given in VideoRecorder.h in your JNI C++ code.
-
-Legal
-
-Use at your own risk, the author is not responsible for anything.
+6. Look at the Android.mk file as reference of your Android.mk file.
