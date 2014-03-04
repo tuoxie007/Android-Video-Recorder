@@ -82,13 +82,14 @@ config_ffmpeg()
 	pushd ffmpeg
 	config_clean
 	FFMPEG_ENCODERS="--enable-encoder=libfaac --enable-encoder=libx264"
-	FFMPEG_DECODERS=""
+	FFMPEG_DECODERS="--enable-decoder=aac --enable-decoder=h264"
 	FFMPEG_MUXERS="--enable-muxer=mp4"
-	FFMPEG_DEMUXERS=""
+	FFMPEG_DEMUXERS="--enable-demuxer=mov"
 	FFMPEG_PARSERS="--enable-parser=aac --enable-parser=h264"
 	FFMPEG_PROTOCOLS="--enable-protocol=file"
 	FFMPEG_BSFS="--enable-bsf=aac_adtstoasc --enable-bsf=h264_mp4toannexb"
 	./configure --cross-prefix=arm-linux-androideabi- \
+		--prefix="$DIR/all-in-one" \
 		--enable-cross-compile \
 		--target-os=linux \
 		--arch=arm \
@@ -97,7 +98,6 @@ config_ffmpeg()
 		--enable-nonfree \
 		--enable-static \
 		--enable-pic \
-		--enable-small \
 		--disable-symver \
 		--disable-debug \
 		--disable-doc \
@@ -161,6 +161,7 @@ compile_ffmpeg()
 	pushd ffmpeg
 	make clean
 	make
+	make install
 	$AR d libavcodec/libavcodec.a inverse.o
 	mkdir tempobjs
 	pushd tempobjs
@@ -173,6 +174,9 @@ compile_ffmpeg()
 	$AR r ../libffmpeg.a *.o
 	popd
 	rm -rf tempobjs
+	rm -rf ../all-in-one/lib/lib*.a 
+	rm -rf ../all-in-one/lib/pkgconfig
+	mv lib*.a ../all-in-one/lib/
 }
 
 compile_recorder()
